@@ -1,9 +1,9 @@
 1. **Prepare Your Debian 12 Server:**
    - Update the package list and upgrade the system:
-     ```
+```
      sudo apt update
      sudo apt upgrade
-     ```
+```
    - Create a non-root user with sudo privileges:
      ```
      sudo adduser yourusername
