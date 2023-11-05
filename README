@@ -1,56 +1,77 @@
-Setting up a functional WordPress website on your Debian 12 server with lighttpd, MariaDB, and PHP, along with an additional service of your choice, can be a comprehensive task. Here's an optimal outline to guide you through the process:
+1. **Prepare Your Debian 12 Server:**
+   - Update the package list and upgrade the system:
+     ```
+     sudo apt update
+     sudo apt upgrade
+     ```
+   - Create a non-root user with sudo privileges:
+     ```
+     sudo adduser yourusername
+     sudo usermod -aG sudo yourusername
+     ```
 
-Prepare Your Debian 12 Server:
+2. **Install Required Software:**
+   - Install lighttpd, MariaDB, and PHP:
+     ```
+     sudo apt install lighttpd mariadb-server php
+     ```
 
-Ensure that your server is up to date with the latest packages and security patches.
-Set up a non-root user with sudo privileges to perform administrative tasks.
-Install Required Software:
+3. **Configure Lighttpd:**
+   - Create a virtual host configuration file for your WordPress site, e.g., `/etc/lighttpd/conf-available/yourwebsite.conf`.
+   - Enable the virtual host:
+     ```
+     sudo ln -s /etc/lighttpd/conf-available/yourwebsite.conf /etc/lighttpd/conf-enabled/
+     ```
+   - Edit the virtual host configuration as needed in `/etc/lighttpd/conf-available/yourwebsite.conf`.
 
-Install lighttpd (web server), MariaDB (database), and PHP (scripting language).
-Use the package manager apt to install these components.
-Configure Lighttpd:
+4. **Install and Configure MariaDB:**
+   - Secure MariaDB:
+     ```
+     sudo mysql_secure_installation
+     ```
+   - Create a new database and user:
+     ```
+     sudo mysql -u root -p
+     CREATE DATABASE yourdb;
+     GRANT ALL ON yourdb.* TO 'youruser'@'localhost' IDENTIFIED BY 'yourpassword';
+     FLUSH PRIVILEGES;
+     ```
 
-Create a virtual host configuration file for your WordPress site in the /etc/lighttpd/conf-available/ directory.
-Enable the virtual host by creating a symbolic link in the /etc/lighttpd/conf-enabled/ directory.
-Configure the virtual host settings for your WordPress site, including the document root.
-Install and Configure MariaDB:
+5. **Install and Configure PHP:**
+   - Ensure PHP is installed:
+     ```
+     sudo apt install php
+     ```
+   - Adjust PHP settings in the `/etc/php/7.X/fpm/php.ini` file as needed.
 
-Secure the MariaDB installation by running the mysql_secure_installation script.
-Create a new database and a dedicated user for your WordPress site.
-Grant the necessary privileges to the user on the database.
-Install and Configure PHP:
+6. **Install and Set Up WordPress:**
+   - Download and extract WordPress:
+     ```
+     sudo wget https://wordpress.org/latest.tar.gz
+     sudo tar -zxvf latest.tar.gz -C /var/www/html
+     ```
+   - Create the wp-config.php file and configure it:
+     ```
+     cd /var/www/html/wordpress
+     sudo cp wp-config-sample.php wp-config.php
+     sudo nano wp-config.php
+     ```
 
-Ensure PHP is installed and configured with the necessary extensions required for WordPress.
-Adjust PHP settings to match WordPress's requirements (e.g., memory limit, max execution time).
-Install and Set Up WordPress:
+7. **Additional Service Setup:**
+   - Install and configure your chosen additional service (e.g., Fail2Ban, Let's Encrypt, WP-CLI, Memcached).
 
-Download the latest WordPress release and extract it to the document root specified in your lighttpd configuration.
-Create a wp-config.php file and configure it with the database settings you created in MariaDB.
-Additional Service Setup:
+8. **Configure DNS and Firewall:**
+   - Update DNS records to point to your server's IP address.
+   - Adjust the firewall settings (e.g., using UFW) to allow HTTP (port 80) and HTTPS (port 443) traffic.
 
-Choose an additional service you find useful for your WordPress website and install/configure it.
-Justify your choice during the defense. Examples include:
-Fail2Ban for security
-Let's Encrypt for SSL/TLS certificates
-WP-CLI for managing WordPress from the command line
-Memcached for caching
-Configure DNS and Firewall:
+9. **Test Your WordPress Website:**
+   - Access your website via a web browser and complete the initial WordPress setup.
 
-Update your DNS records to point to your server's IP address.
-Adjust your server's firewall settings to allow traffic on ports 80 (HTTP) and 443 (HTTPS) if necessary.
-Test Your WordPress Website:
+10. **Backup and Monitoring:**
+    - Set up backups and monitoring as per your chosen tools and requirements.
 
-Access your website through a web browser to ensure it's functional.
-Create a new WordPress admin user and perform basic configuration and customization.
-Backup and Monitoring:
+11. **Documentation and Final Checks:**
+    - Document your configurations and perform final checks to ensure everything works correctly.
 
-Set up regular backups for your WordPress site and databases.
-Implement monitoring and alerting for the server and website health.
-Documentation and Final Checks:
-
-Document all the configurations and settings made during the setup.
-Perform final checks to ensure that everything is working as expected.
-Prepare for Defense:
-
-Review your choices for the additional service and be ready to justify them during your defense.
-Remember to consult the official documentation for each component you install to ensure you follow best practices and stay up to date with any changes or new features. This outline provides a general roadmap for setting up a WordPress website on Debian 12 with the specified services and an additional service of your choice.
+12. **Prepare for Defense:**
+    - Review and be prepared to justify your choice of the additional service during your defense.
